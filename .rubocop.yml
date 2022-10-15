@@ -1,0 +1,26 @@
+---
+require:
+  - rubocop-rake
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 2.7
+  DisplayCopNames: true
+  Exclude:
+    - "**/node_modules/**/*"
+    - "**/pkg/**"
+    - "**/target/**/*"
+    - "**/vendor/**/*"
+Layout/EndOfLine:
+  EnforcedStyle: lf
+Layout/LineLength:
+  Enabled: true
+  Exclude:
+    - "**/Rakefile"
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+Metrics:
+  Enabled: false
+Style/AccessModifierDeclarations:
+  EnforcedStyle: inline
+Style/Documentation:
+  Enabled: false
