@@ -32,7 +32,7 @@ GEM
     unicode-display_width (2.3.0)
 
 PLATFORMS
-  x86_64-darwin-21
+  ruby
 
 DEPENDENCIES
   bundler-audit (~> 0.9)
