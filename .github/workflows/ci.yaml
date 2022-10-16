@@ -55,6 +55,16 @@ jobs:
         run: |
           [[ "$(rustup show active-toolchain)" == 1.64.0-* ]]
 
+      - name: Setup fixed build and test toolchain with additional target
+        uses: ./setup-rust-action/build-and-test
+        with:
+          toolchain: 1.59.0
+          target: i686-unknown-linux-gnu
+
+      - name: Check that active toolchain is fixed
+        run: |
+          [[ "$(rustup show active-toolchain)" == 1.59.0-* ]]
+
   test-setup-check-minimal-versions-toolchain:
     name: Test setup check minimal versions toolchain action
     runs-on: ubuntu-latest
