@@ -1,0 +1,66 @@
+---
+name: "Minimal Versions Toolchain"
+description: "Setup stable and nightly Rust toolchains for running cargo check with -Zminimal-versions"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install ${{ inputs.toolchain }} toolchain
+      shell: bash
+      run: rustup toolchain install "${{ inputs.toolchain }}" --profile minimal --component clippy --component rustfmt
+
+    - name: Update ${{ inputs.toolchain }} toolchain
+      shell: bash
+      run: rustup update "${{ inputs.toolchain }}"
+
+    - name: Set default toolchain to ${{ inputs.toolchain }}
+      shell: bash
+      # https://rust-lang.github.io/rustup/overrides.html
+      run: echo 'RUSTUP_TOOLCHAIN=${{ inputs.toolchain }}' >> "$GITHUB_ENV"
+
+    - name: Show rustup version
+      shell: bash
+      run: rustup -Vv
+
+    - name: Show ${{ inputs.toolchain }} rustc version
+      shell: bash
+      run: rustc +${{ inputs.toolchain }} -Vv
+
+    - name: Show ${{ inputs.toolchain }} cargo version
+      shell: bash
+      run: cargo +${{ inputs.toolchain }} version --verbose
+
+    - name: Show ${{ inputs.toolchain }} clippy version
+      shell: bash
+      run: cargo +${{ inputs.toolchain }} clippy --version --verbose
+
+    - name: Show ${{ inputs.toolchain }} rustfmt version
+      shell: bash
+      run: cargo +${{ inputs.toolchain }} fmt --version --verbose
+
+    - name: Install nightly toolchain
+      shell: bash
+      run: rustup toolchain install nightly --profile minimal --component clippy --component rustfmt
+
+    - name: Update nightly toolchain
+      shell: bash
+      run: rustup update nightly
+
+    - name: Show nightly rustc version
+      shell: bash
+      run: rustc +nightly -Vv
+
+    - name: Show nightly cargo version
+      shell: bash
+      run: cargo +nightly version --verbose
+
+    - name: Show nightly clippy version
+      shell: bash
+      run: cargo +nightly clippy --version --verbose
+
+    - name: Show nightly rustfmt version
+      shell: bash
+      run: cargo +nightly fmt --version --verbose
+
+    - name: Setup Rust caching
+      uses: Swatinem/rust-cache@v1

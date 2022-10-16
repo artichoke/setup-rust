@@ -10,6 +10,177 @@ name: CI
   schedule:
     - cron: "0 0 * * TUE"
 jobs:
+  test-setup-build-and-test-toolchain:
+    name: Test setup build and test toolchain action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          path: setup-rust-action
+
+      - name: Setup nightly build and test toolchain
+        uses: ./setup-rust-action/build-and-test
+        with:
+          toolchain: nightly
+
+      - name: Check that active toolchain is nightly
+        run: |
+          [[ "$(rustup show active-toolchain)" == nightly-* ]]
+
+      - name: Setup stable build and test toolchain
+        uses: ./setup-rust-action/build-and-test
+        with:
+          toolchain: stable
+
+      - name: Check that active toolchain is stable
+        run: |
+          [[ "$(rustup show active-toolchain)" == stable-* ]]
+
+      - name: Setup beta build and test toolchain
+        uses: ./setup-rust-action/build-and-test
+        with:
+          toolchain: beta
+
+      - name: Check that active toolchain is beta
+        run: |
+          [[ "$(rustup show active-toolchain)" == beta-* ]]
+
+      - name: Setup fixed build and test toolchain
+        uses: ./setup-rust-action/build-and-test
+        with:
+          toolchain: 1.64.0
+
+      - name: Check that active toolchain is fixed
+        run: |
+          [[ "$(rustup show active-toolchain)" == 1.64.0-* ]]
+
+  test-setup-check-minimal-versions-toolchain:
+    name: Test setup check minimal versions toolchain action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          path: setup-rust-action
+
+      - name: Setup stable build and test toolchain
+        uses: ./setup-rust-action/check-minimal-versions
+        with:
+          toolchain: stable
+
+      - name: Check that active toolchain is stable
+        run: |
+          [[ "$(rustup show active-toolchain)" == stable-* ]]
+
+      - name: Check that nightly toolchain is installed
+        run: rustc +nightly -Vv
+
+      - name: Setup beta build and test toolchain
+        uses: ./setup-rust-action/check-minimal-versions
+        with:
+          toolchain: beta
+
+      - name: Check that active toolchain is beta
+        run: |
+          [[ "$(rustup show active-toolchain)" == beta-* ]]
+
+      - name: Check that nightly toolchain is installed
+        run: rustc +nightly -Vv
+
+      - name: Setup fixed build and test toolchain
+        uses: ./setup-rust-action/check-minimal-versions
+        with:
+          toolchain: 1.64.0
+
+      - name: Check that active toolchain is fixed
+        run: |
+          [[ "$(rustup show active-toolchain)" == 1.64.0-* ]]
+
+      - name: Check that nightly toolchain is installed
+        run: rustc +nightly -Vv
+
+  test-setup-lint-and-format-toolchain:
+    name: Test setup lint and format toolchain action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          path: setup-rust-action
+
+      - name: Setup stable build and test toolchain
+        uses: ./setup-rust-action/lint-and-format
+        with:
+          toolchain: stable
+
+      - name: Check that active toolchain is stable
+        run: |
+          [[ "$(rustup show active-toolchain)" == stable-* ]]
+
+      - name: Check that stable clippy is installed
+        run: cargo +stable clippy --version --verbose
+
+      - name: Check that stable rustfmt is installed
+        run: cargo +stable fmt --version --verbose
+
+      - name: Check that nightly toolchain is installed
+        run: rustc +nightly -Vv
+
+      - name: Check that nightly clippy is installed
+        run: cargo +nightly clippy --version --verbose
+
+      - name: Check that nightly rustfmt is installed
+        run: cargo +nightly fmt --version --verbose
+
+      - name: Setup beta build and test toolchain
+        uses: ./setup-rust-action/lint-and-format
+        with:
+          toolchain: beta
+
+      - name: Check that active toolchain is beta
+        run: |
+          [[ "$(rustup show active-toolchain)" == beta-* ]]
+
+      - name: Check that beta clippy is installed
+        run: cargo +beta clippy --version --verbose
+
+      - name: Check that beta rustfmt is installed
+        run: cargo +beta fmt --version --verbose
+
+      - name: Check that nightly toolchain is installed
+        run: rustc +nightly -Vv
+
+      - name: Check that nightly clippy is installed
+        run: cargo +nightly clippy --version --verbose
+
+      - name: Check that nightly rustfmt is installed
+        run: cargo +nightly fmt --version --verbose
+
+      - name: Setup fixed build and test toolchain
+        uses: ./setup-rust-action/lint-and-format
+        with:
+          toolchain: 1.64.0
+
+      - name: Check that active toolchain is fixed
+        run: |
+          [[ "$(rustup show active-toolchain)" == 1.64.0-* ]]
+
+      - name: Check that fixed clippy is installed
+        run: cargo +1.64.0 clippy --version --verbose
+
+      - name: Check that fixed rustfmt is installed
+        run: cargo +1.64.0 fmt --version --verbose
+
+      - name: Check that nightly toolchain is installed
+        run: rustc +nightly -Vv
+
+      - name: Check that nightly clippy is installed
+        run: cargo +nightly clippy --version --verbose
+
+      - name: Check that nightly rustfmt is installed
+        run: cargo +nightly fmt --version --verbose
+
   test-setup-rustdoc-toolchain:
     name: Test setup rustdoc toolchain action
     runs-on: ubuntu-latest
