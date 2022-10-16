@@ -1,0 +1,34 @@
+---
+name: "Rustdoc Toolchain"
+description: "Setup a nightly Rust toolchain for generating documentation and set it as the default"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install nightly toolchain
+      shell: bash
+      run: rustup toolchain install nightly --profile minimal
+
+    - name: Update nightly toolchain
+      shell: bash
+      run: rustup update nightly
+
+    - name: Set default toolchain to nightly
+      shell: bash
+      # https://rust-lang.github.io/rustup/overrides.html
+      run: echo 'RUSTUP_TOOLCHAIN=nightly' >> "$GITHUB_ENV"
+
+    - name: Show rustup version
+      shell: bash
+      run: rustup -Vv
+
+    - name: Show rustc version
+      shell: bash
+      run: rustc -Vv
+
+    - name: Show cargo version
+      shell: bash
+      run: cargo version --verbose
+
+    - name: Setup Rust caching
+      uses: Swatinem/rust-cache@v1
