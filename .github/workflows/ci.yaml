@@ -10,6 +10,22 @@ name: CI
   schedule:
     - cron: "0 0 * * TUE"
 jobs:
+  test-setup-rustdoc-toolchain:
+    name: Test setup rustdoc toolchain action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          path: setup-rust-action
+
+      - name: Setup nightly rustdoc toolchain
+        uses: ./setup-rust-action/rustdoc
+
+      - name: Check that active toolchain is nightly
+        run: |
+          [[ "$(rustup show active-toolchain)" == nightly-* ]]
+
   ruby:
     name: Lint and format Ruby
     runs-on: ubuntu-latest
