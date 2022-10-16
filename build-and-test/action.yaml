@@ -7,6 +7,10 @@ inputs:
     description: "Rustup toolchain"
     required: true
     default: "stable"
+  target:
+    description: "Target triple"
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -18,6 +22,11 @@ runs:
     - name: Update ${{ inputs.toolchain }} toolchain
       shell: bash
       run: rustup update "${{ inputs.toolchain }}"
+
+    - name: Install additional target
+      shell: bash
+      if: inputs.target != ''
+      run: rustup target add "${{ inputs.target }}"
 
     - name: Set default toolchain to ${{ inputs.toolchain }}
       shell: bash
