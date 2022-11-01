@@ -2,6 +2,12 @@
 name: "Minimal Versions Toolchain"
 description: "Setup stable and nightly Rust toolchains for running cargo check with -Zminimal-versions"
 
+inputs:
+  toolchain:
+    description: "Rustup toolchain"
+    required: true
+    default: "stable"
+
 runs:
   using: "composite"
   steps:
@@ -62,5 +68,16 @@ runs:
       shell: bash
       run: cargo +nightly fmt --version --verbose
 
+    - name: Check if Cargo.lock is present
+      shell: bash
+      id: lockfile
+      run: |
+        if [[ -f Cargo.lock ]]; then
+          echo "present=true" >> $GITHUB_OUTPUT
+        else
+          echo "present=false" >> $GITHUB_OUTPUT
+        fi
+
     - name: Setup Rust caching
       uses: Swatinem/rust-cache@v1
+      if: steps.lockfile.outputs.present == 'true'
