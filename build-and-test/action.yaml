@@ -45,5 +45,16 @@ runs:
       shell: bash
       run: cargo +${{ inputs.toolchain }} version --verbose
 
+    - name: Check if Cargo.lock is present
+      shell: bash
+      id: lockfile
+      run: |
+        if [[ -f Cargo.lock ]]; then
+          echo "present=true" >> $GITHUB_OUTPUT
+        else
+          echo "present=false" >> $GITHUB_OUTPUT
+        fi
+
     - name: Setup Rust caching
       uses: Swatinem/rust-cache@v1
+      if: steps.lockfile.outputs.present == 'true'
