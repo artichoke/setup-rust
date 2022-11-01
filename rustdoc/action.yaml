@@ -29,6 +29,3 @@ runs:
     - name: Show cargo version
       shell: bash
       run: cargo version --verbose
-
-    - name: Setup Rust caching
-      uses: Swatinem/rust-cache@v1
