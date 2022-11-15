@@ -26,7 +26,7 @@ runs:
     - name: Install additional target
       shell: bash
       if: inputs.target != ''
-      run: rustup target add "${{ inputs.target }}"
+      run: rustup target add --toolchain "${{ inputs.toolchain }}" "${{ inputs.target }}"
 
     - name: Set default toolchain to ${{ inputs.toolchain }}
       shell: bash
