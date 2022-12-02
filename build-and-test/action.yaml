@@ -56,5 +56,5 @@ runs:
         fi
 
     - name: Setup Rust caching
-      uses: Swatinem/rust-cache@v1
+      uses: Swatinem/rust-cache@v2
       if: steps.lockfile.outputs.present == 'true'
