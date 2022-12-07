@@ -10,6 +10,22 @@ name: CI
   schedule:
     - cron: "0 0 * * TUE"
 jobs:
+  test-setup-audit-toolchain:
+    name: Test setup audit toolchain action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          path: setup-rust-action
+
+      - name: Setup stable audit toolchain
+        uses: ./setup-rust-action/audit
+
+      - name: Check that active toolchain is stable
+        run: |
+          [[ "$(rustup show active-toolchain)" == stable-* ]]
+
   test-setup-build-and-test-toolchain:
     name: Test setup build and test toolchain action
     runs-on: ubuntu-latest

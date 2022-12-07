@@ -1,4 +1,7 @@
 ---
+- name: "A-audit"
+  color: "f7e101"
+  description: "Area: Audit configurable toolchain."
 - name: "A-build"
   color: "f7e101"
   description: "Area: CI build infrastructure."
