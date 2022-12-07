@@ -1,0 +1,37 @@
+---
+name: "Audit Toolchain"
+description: "Setup a stable Rust toolchain with no bells and whistles so cargo-deny works"
+
+inputs:
+  toolchain:
+    description: "Rustup toolchain"
+    required: true
+    default: "stable"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install ${{ inputs.toolchain }} toolchain
+      shell: bash
+      run: rustup toolchain install "${{ inputs.toolchain }}" --profile minimal
+
+    - name: Update ${{ inputs.toolchain }} toolchain
+      shell: bash
+      run: rustup update "${{ inputs.toolchain }}"
+
+    - name: Set default toolchain to ${{ inputs.toolchain }}
+      shell: bash
+      # https://rust-lang.github.io/rustup/overrides.html
+      run: echo 'RUSTUP_TOOLCHAIN=${{ inputs.toolchain }}' >> "$GITHUB_ENV"
+
+    - name: Show rustup version
+      shell: bash
+      run: rustup -Vv
+
+    - name: Show ${{ inputs.toolchain }} rustc version
+      shell: bash
+      run: rustc +${{ inputs.toolchain }} -Vv
+
+    - name: Show ${{ inputs.toolchain }} cargo version
+      shell: bash
+      run: cargo +${{ inputs.toolchain }} version --verbose
