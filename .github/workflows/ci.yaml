@@ -126,6 +126,22 @@ jobs:
       - name: Check that nightly toolchain is installed
         run: rustc +nightly -Vv
 
+  test-setup-code-coverage-toolchain:
+    name: Test setup code coverage toolchain action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          path: setup-rust-action
+
+      - name: Setup stable audit toolchain
+        uses: ./setup-rust-action/code-coverage
+
+      - name: Check that active toolchain is stable
+        run: |
+          [[ "$(rustup show active-toolchain)" == nightly-* ]]
+
   test-setup-lint-and-format-toolchain:
     name: Test setup lint and format toolchain action
     runs-on: ubuntu-latest
