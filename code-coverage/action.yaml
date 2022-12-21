@@ -1,0 +1,37 @@
+---
+name: "Audit Toolchain"
+description: "Setup a nightly Rust toolchain with llvm-tools so code coverage works"
+
+inputs:
+  toolchain:
+    description: "Rustup toolchain"
+    required: true
+    default: "nightly"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install ${{ inputs.toolchain }} toolchain
+      shell: bash
+      run: rustup toolchain install "${{ inputs.toolchain }}" --profile minimal --component llvm-tools-preview
+
+    - name: Update ${{ inputs.toolchain }} toolchain
+      shell: bash
+      run: rustup update "${{ inputs.toolchain }}"
+
+    - name: Set default toolchain to ${{ inputs.toolchain }}
+      shell: bash
+      # https://rust-lang.github.io/rustup/overrides.html
+      run: echo 'RUSTUP_TOOLCHAIN=${{ inputs.toolchain }}' >> "$GITHUB_ENV"
+
+    - name: Show rustup version
+      shell: bash
+      run: rustup -Vv
+
+    - name: Show ${{ inputs.toolchain }} rustc version
+      shell: bash
+      run: rustc +${{ inputs.toolchain }} -Vv
+
+    - name: Show ${{ inputs.toolchain }} cargo version
+      shell: bash
+      run: cargo +${{ inputs.toolchain }} version --verbose
