@@ -223,6 +223,22 @@ jobs:
       - name: Check that nightly rustfmt is installed
         run: cargo +nightly fmt --version --verbose
 
+  test-setup-miri-toolchain:
+    name: Test setup miri toolchain action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          path: setup-rust-action
+
+      - name: Setup stable audit toolchain
+        uses: ./setup-rust-action/miri
+
+      - name: Check that active toolchain is nightly
+        run: |
+          [[ "$(rustup show active-toolchain)" == nightly-* ]]
+
   test-setup-rustdoc-toolchain:
     name: Test setup rustdoc toolchain action
     runs-on: ubuntu-latest
