@@ -1,5 +1,5 @@
 ---
-name: "Audit Toolchain"
+name: "Code Coverage Toolchain"
 description: "Setup a nightly Rust toolchain with llvm-tools so code coverage works"
 
 inputs:

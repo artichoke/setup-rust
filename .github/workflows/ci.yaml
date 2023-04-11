@@ -138,7 +138,7 @@ jobs:
       - name: Setup stable audit toolchain
         uses: ./setup-rust-action/code-coverage
 
-      - name: Check that active toolchain is stable
+      - name: Check that active toolchain is nightly
         run: |
           [[ "$(rustup show active-toolchain)" == nightly-* ]]
 
