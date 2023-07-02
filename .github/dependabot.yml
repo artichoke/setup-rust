@@ -17,7 +17,7 @@ updates:
       - lopopolo
     labels:
       - A-deps
-    - package-ecosystem: "github-actions"
+  - package-ecosystem: "github-actions"
     directory: "/audit"
     schedule:
       interval: "monthly"
@@ -25,7 +25,7 @@ updates:
       - lopopolo
     labels:
       - A-deps
-    - package-ecosystem: "github-actions"
+  - package-ecosystem: "github-actions"
     directory: "/build-and-test"
     schedule:
       interval: "monthly"
@@ -33,7 +33,7 @@ updates:
       - lopopolo
     labels:
       - A-deps
-    - package-ecosystem: "github-actions"
+  - package-ecosystem: "github-actions"
     directory: "/check-minimal-versions"
     schedule:
       interval: "monthly"
@@ -41,7 +41,7 @@ updates:
       - lopopolo
     labels:
       - A-deps
-    - package-ecosystem: "github-actions"
+  - package-ecosystem: "github-actions"
     directory: "/code-coverage"
     schedule:
       interval: "monthly"
@@ -49,7 +49,7 @@ updates:
       - lopopolo
     labels:
       - A-deps
-    - package-ecosystem: "github-actions"
+  - package-ecosystem: "github-actions"
     directory: "/lint-and-format"
     schedule:
       interval: "monthly"
@@ -57,7 +57,7 @@ updates:
       - lopopolo
     labels:
       - A-deps
-    - package-ecosystem: "github-actions"
+  - package-ecosystem: "github-actions"
     directory: "/miri"
     schedule:
       interval: "monthly"
@@ -65,7 +65,7 @@ updates:
       - lopopolo
     labels:
       - A-deps
-    - package-ecosystem: "github-actions"
+  - package-ecosystem: "github-actions"
     directory: "/rustdoc"
     schedule:
       interval: "monthly"
