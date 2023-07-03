@@ -5,6 +5,10 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    groups:
+      gha-deps:
+        patterns:
+          - "*"
     assignees:
       - lopopolo
     labels:
@@ -13,6 +17,10 @@ updates:
     directory: "/audit"
     schedule:
       interval: "monthly"
+    groups:
+      gha-deps:
+        patterns:
+          - "*"
     assignees:
       - lopopolo
     labels:
@@ -21,6 +29,10 @@ updates:
     directory: "/build-and-test"
     schedule:
       interval: "monthly"
+    groups:
+      gha-deps:
+        patterns:
+          - "*"
     assignees:
       - lopopolo
     labels:
@@ -29,6 +41,10 @@ updates:
     directory: "/check-minimal-versions"
     schedule:
       interval: "monthly"
+    groups:
+      gha-deps:
+        patterns:
+          - "*"
     assignees:
       - lopopolo
     labels:
@@ -37,6 +53,10 @@ updates:
     directory: "/code-coverage"
     schedule:
       interval: "monthly"
+    groups:
+      gha-deps:
+        patterns:
+          - "*"
     assignees:
       - lopopolo
     labels:
@@ -45,6 +65,10 @@ updates:
     directory: "/lint-and-format"
     schedule:
       interval: "monthly"
+    groups:
+      gha-deps:
+        patterns:
+          - "*"
     assignees:
       - lopopolo
     labels:
@@ -53,6 +77,10 @@ updates:
     directory: "/miri"
     schedule:
       interval: "monthly"
+    groups:
+      gha-deps:
+        patterns:
+          - "*"
     assignees:
       - lopopolo
     labels:
@@ -61,6 +89,10 @@ updates:
     directory: "/rustdoc"
     schedule:
       interval: "monthly"
+    groups:
+      gha-deps:
+        patterns:
+          - "*"
     assignees:
       - lopopolo
     labels:
@@ -69,7 +101,10 @@ updates:
     directory: "/"
     schedule:
       interval: monthly
-    open-pull-requests-limit: 10
+    groups:
+      bundler-deps:
+        patterns:
+          - "*"
     assignees:
       - lopopolo
     labels:
