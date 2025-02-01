@@ -2,91 +2,15 @@
 version: 2
 updates:
   - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "monthly"
-    groups:
-      gha-deps:
-        patterns:
-          - "*"
-    assignees:
-      - lopopolo
-    labels:
-      - A-deps
-  - package-ecosystem: "github-actions"
-    directory: "/audit"
-    schedule:
-      interval: "monthly"
-    groups:
-      gha-deps:
-        patterns:
-          - "*"
-    assignees:
-      - lopopolo
-    labels:
-      - A-deps
-  - package-ecosystem: "github-actions"
-    directory: "/build-and-test"
-    schedule:
-      interval: "monthly"
-    groups:
-      gha-deps:
-        patterns:
-          - "*"
-    assignees:
-      - lopopolo
-    labels:
-      - A-deps
-  - package-ecosystem: "github-actions"
-    directory: "/check-minimal-versions"
-    schedule:
-      interval: "monthly"
-    groups:
-      gha-deps:
-        patterns:
-          - "*"
-    assignees:
-      - lopopolo
-    labels:
-      - A-deps
-  - package-ecosystem: "github-actions"
-    directory: "/code-coverage"
-    schedule:
-      interval: "monthly"
-    groups:
-      gha-deps:
-        patterns:
-          - "*"
-    assignees:
-      - lopopolo
-    labels:
-      - A-deps
-  - package-ecosystem: "github-actions"
-    directory: "/lint-and-format"
-    schedule:
-      interval: "monthly"
-    groups:
-      gha-deps:
-        patterns:
-          - "*"
-    assignees:
-      - lopopolo
-    labels:
-      - A-deps
-  - package-ecosystem: "github-actions"
-    directory: "/miri"
-    schedule:
-      interval: "monthly"
-    groups:
-      gha-deps:
-        patterns:
-          - "*"
-    assignees:
-      - lopopolo
-    labels:
-      - A-deps
-  - package-ecosystem: "github-actions"
-    directory: "/rustdoc"
+    directories:
+      - "/"
+      - "/audit"
+      - "/build-and-test"
+      - "/check-minimal-versions"
+      - "/code-coverage"
+      - "/lint-and-format"
+      - "/miri"
+      - "/rustdoc"
     schedule:
       interval: "monthly"
     groups:
