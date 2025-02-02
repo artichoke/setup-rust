@@ -7,31 +7,49 @@ inputs:
     description: "Rustup toolchain"
     required: true
     default: "stable"
+  override-dir:
+    description: "Directory to set the rustup override for"
+    required: false
+    default: "."
 
 runs:
   using: "composite"
+  env:
+    TOOLCHAIN: ${{ inputs.toolchain }}
   steps:
-    - name: Install ${{ inputs.toolchain }} toolchain
+    - name: Install toolchain
       shell: bash
-      run: rustup toolchain install "${{ inputs.toolchain }}" --profile minimal
+      working-directory: ${{ inputs.override-dir }}
+      run: |
+        rustup toolchain install "$TOOLCHAIN" --profile minimal
 
-    - name: Update ${{ inputs.toolchain }} toolchain
+    - name: Update toolchain
       shell: bash
-      run: rustup update "${{ inputs.toolchain }}"
+      working-directory: ${{ inputs.override-dir }}
+      run: |
+        rustup update "$TOOLCHAIN"
 
-    - name: Set default toolchain to ${{ inputs.toolchain }}
+    - name: Set default toolchain override
       shell: bash
-      # https://rust-lang.github.io/rustup/overrides.html
-      run: echo 'RUSTUP_TOOLCHAIN=${{ inputs.toolchain }}' >> "$GITHUB_ENV"
+      working-directory: ${{ inputs.override-dir }}
+      run: |
+        # https://rust-lang.github.io/rustup/overrides.html
+        rustup override set "$TOOLCHAIN"
 
     - name: Show rustup version
       shell: bash
-      run: rustup -Vv
+      working-directory: ${{ inputs.override-dir }}
+      run: |
+        rustup -Vv
 
-    - name: Show ${{ inputs.toolchain }} rustc version
+    - name: Show rustc version
       shell: bash
-      run: rustc +${{ inputs.toolchain }} -Vv
+      working-directory: ${{ inputs.override-dir }}
+      run: |
+        rustc +"$TOOLCHAIN" -Vv
 
-    - name: Show ${{ inputs.toolchain }} cargo version
+    - name: Show cargo version
       shell: bash
-      run: cargo +${{ inputs.toolchain }} version --verbose
+      working-directory: ${{ inputs.override-dir }}
+      run: |
+        cargo +"$TOOLCHAIN" version --verbose
