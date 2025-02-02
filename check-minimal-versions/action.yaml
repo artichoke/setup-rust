@@ -7,75 +7,94 @@ inputs:
     description: "Rustup toolchain"
     required: true
     default: "stable"
+  override-dir:
+    description: "Directory to set the rustup override for"
+    required: false
+    default: "."
 
 runs:
   using: "composite"
   steps:
-    - name: Install ${{ inputs.toolchain }} toolchain
+    - name: Install toolchain
       shell: bash
-      run: rustup toolchain install "${{ inputs.toolchain }}" --profile minimal --component clippy --component rustfmt
+      working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
+      run: |
+        rustup toolchain install "$TOOLCHAIN" --profile minimal
 
-    - name: Update ${{ inputs.toolchain }} toolchain
+    - name: Update toolchain
       shell: bash
-      run: rustup update "${{ inputs.toolchain }}"
+      working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
+      run: |
+        rustup update "$TOOLCHAIN"
 
-    - name: Set default toolchain to ${{ inputs.toolchain }}
+    - name: Set default toolchain
       shell: bash
-      # https://rust-lang.github.io/rustup/overrides.html
-      run: echo 'RUSTUP_TOOLCHAIN=${{ inputs.toolchain }}' >> "$GITHUB_ENV"
+      working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
+      run: |
+        # https://rust-lang.github.io/rustup/overrides.html
+        rustup override set "$TOOLCHAIN"
 
     - name: Show rustup version
       shell: bash
-      run: rustup -Vv
+      working-directory: ${{ inputs.override-dir }}
+      run: |
+        rustup -Vv
 
-    - name: Show ${{ inputs.toolchain }} rustc version
+    - name: Show rustc version
       shell: bash
-      run: rustc +${{ inputs.toolchain }} -Vv
+      working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
+      run: |
+        rustc +"$TOOLCHAIN" -Vv
 
-    - name: Show ${{ inputs.toolchain }} cargo version
+    - name: Show cargo version
       shell: bash
-      run: cargo +${{ inputs.toolchain }} version --verbose
-
-    - name: Show ${{ inputs.toolchain }} clippy version
-      shell: bash
-      run: cargo +${{ inputs.toolchain }} clippy --version --verbose
-
-    - name: Show ${{ inputs.toolchain }} rustfmt version
-      shell: bash
-      run: cargo +${{ inputs.toolchain }} fmt --version --verbose
+      working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
+      run: |
+        cargo +"$TOOLCHAIN" version --verbose
 
     - name: Install nightly toolchain
       shell: bash
-      run: rustup toolchain install nightly --profile minimal --component clippy --component rustfmt
+      working-directory: ${{ inputs.override-dir }}
+      run: |
+        rustup toolchain install nightly --profile minimal
 
     - name: Update nightly toolchain
       shell: bash
-      run: rustup update nightly
+      working-directory: ${{ inputs.override-dir }}
+      run: |
+        rustup update nightly
 
     - name: Show nightly rustc version
       shell: bash
-      run: rustc +nightly -Vv
+      working-directory: ${{ inputs.override-dir }}
+      run: |
+        rustc +nightly -Vv
 
     - name: Show nightly cargo version
       shell: bash
-      run: cargo +nightly version --verbose
-
-    - name: Show nightly clippy version
-      shell: bash
-      run: cargo +nightly clippy --version --verbose
-
-    - name: Show nightly rustfmt version
-      shell: bash
-      run: cargo +nightly fmt --version --verbose
+      working-directory: ${{ inputs.override-dir }}
+      run: |
+        cargo +nightly version --verbose
 
     - name: Check if Cargo.lock is present
       shell: bash
+      working-directory: ${{ inputs.override-dir }}
       id: lockfile
       run: |
         if [[ -f Cargo.lock ]]; then
-          echo "present=true" >> $GITHUB_OUTPUT
+          echo "present=true" >> "$GITHUB_OUTPUT"
         else
-          echo "present=false" >> $GITHUB_OUTPUT
+          echo "present=false" >> "$GITHUB_OUTPUT"
         fi
 
     - name: Setup Rust caching

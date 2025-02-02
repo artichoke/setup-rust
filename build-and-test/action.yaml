@@ -11,48 +11,80 @@ inputs:
     description: "Target triple"
     required: false
     default: ""
+  override-dir:
+    description: "Directory to set the rustup override for"
+    required: false
+    default: "."
 
 runs:
   using: "composite"
   steps:
-    - name: Install ${{ inputs.toolchain }} toolchain
+    - name: Install toolchain
       shell: bash
-      run: rustup toolchain install "${{ inputs.toolchain }}" --profile minimal
+      working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
+      run: |
+        rustup toolchain install "$TOOLCHAIN" --profile minimal
 
-    - name: Update ${{ inputs.toolchain }} toolchain
+    - name: Update toolchain
       shell: bash
-      run: rustup update "${{ inputs.toolchain }}"
+      working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
+      run: |
+        rustup update "$TOOLCHAIN"
 
     - name: Install additional target
       shell: bash
+      working-directory: ${{ inputs.override-dir }}
       if: inputs.target != ''
-      run: rustup target add --toolchain "${{ inputs.toolchain }}" "${{ inputs.target }}"
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
+        TARGET: ${{ inputs.target }}
+      run: |
+        rustup target add --toolchain "$TOOLCHAIN" "$TARGET"
 
-    - name: Set default toolchain to ${{ inputs.toolchain }}
+    - name: Set default toolchain
       shell: bash
-      # https://rust-lang.github.io/rustup/overrides.html
-      run: echo 'RUSTUP_TOOLCHAIN=${{ inputs.toolchain }}' >> "$GITHUB_ENV"
+      working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
+      run: |
+        # https://rust-lang.github.io/rustup/overrides.html
+        rustup override set "$TOOLCHAIN"
 
     - name: Show rustup version
       shell: bash
-      run: rustup -Vv
+      working-directory: ${{ inputs.override-dir }}
+      run: |
+        rustup -Vv
 
-    - name: Show ${{ inputs.toolchain }} rustc version
+    - name: Show rustc version
       shell: bash
-      run: rustc +${{ inputs.toolchain }} -Vv
+      working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
+      run: |
+        rustc +"$TOOLCHAIN" -Vv
 
-    - name: Show ${{ inputs.toolchain }} cargo version
+    - name: Show cargo version
       shell: bash
-      run: cargo +${{ inputs.toolchain }} version --verbose
+      working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
+      run: |
+        cargo +"$TOOLCHAIN" version --verbose
 
     - name: Check if Cargo.lock is present
       shell: bash
+      working-directory: ${{ inputs.override-dir }}
       id: lockfile
       run: |
         if [[ -f Cargo.lock ]]; then
-          echo "present=true" >> $GITHUB_OUTPUT
+          echo "present=true" >> "$GITHUB_OUTPUT"
         else
-          echo "present=false" >> $GITHUB_OUTPUT
+          echo "present=false" >> "$GITHUB_OUTPUT"
         fi
 
     - name: Setup Rust caching
