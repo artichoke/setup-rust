@@ -14,24 +14,28 @@ inputs:
 
 runs:
   using: "composite"
-  env:
-    TOOLCHAIN: ${{ inputs.toolchain }}
   steps:
     - name: Install toolchain
       shell: bash
       working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
       run: |
         rustup toolchain install "$TOOLCHAIN" --profile minimal
 
     - name: Update toolchain
       shell: bash
       working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
       run: |
         rustup update "$TOOLCHAIN"
 
     - name: Set default toolchain
       shell: bash
       working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
       run: |
         # https://rust-lang.github.io/rustup/overrides.html
         rustup override set "$TOOLCHAIN"
@@ -45,12 +49,16 @@ runs:
     - name: Show rustc version
       shell: bash
       working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
       run: |
         rustc +"$TOOLCHAIN" -Vv
 
     - name: Show cargo version
       shell: bash
       working-directory: ${{ inputs.override-dir }}
+      env:
+        TOOLCHAIN: ${{ inputs.toolchain }}
       run: |
         cargo +"$TOOLCHAIN" version --verbose
 
