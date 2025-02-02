@@ -21,7 +21,7 @@ runs:
       env:
         TOOLCHAIN: ${{ inputs.toolchain }}
       run: |
-        rustup toolchain install "$TOOLCHAIN" --profile minimal --component clippy --component rustfmt
+        rustup toolchain install "$TOOLCHAIN" --profile minimal --component llvm-tools-preview
 
     - name: Update toolchain
       shell: bash
