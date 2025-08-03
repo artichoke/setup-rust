@@ -25,6 +25,10 @@ jobs:
         uses: ruby/setup-ruby@2a7b30092b0caf9c046252510f9273b4875f3db9 # v1.254.0
         with:
           ruby-version: ".ruby-version"
+          bundler-cache: true
+
+      - name: bundler-audit
+        run: bundle exec bundle-audit check --update
 
   zizmor:
     name: Run zizmor 🌈
@@ -41,8 +45,3 @@ jobs:
         uses: zizmorcore/zizmor-action@f52a838cfabf134edcbaa7c8b3677dde20045018 # v0.1.1
         with:
           persona: "pedantic"
-
-          bundler-cache: true
-
-      - name: bundler-audit
-        run: bundle exec bundle-audit check --update
